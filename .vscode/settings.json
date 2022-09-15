@@ -1,6 +1,7 @@
 {
   "conventionalCommits.scopes": [
     "req2",
-    "req3"
+    "req3",
+    "req4"
   ]
 }
