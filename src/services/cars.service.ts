@@ -1,23 +1,22 @@
 import IService from '../interfaces/IService';
-import { ICar } from '../interfaces/ICar';
-// import { CarZodSchema, ICar } from '../interfaces/ICar';
+import { ICar, CarZodSchema } from '../interfaces/ICar';
 import { IModel } from '../interfaces/IModel';
 // import { ErrorTypes } from '../catalog/Error.catalog';
 
 class CarService implements IService<ICar> {
-  constructor(private _car:IModel<ICar>) {}
+  constructor(private _car: IModel<ICar>) {}
 
-  // public async create(obj: unknown): Promise<ICar> {
-  //   const parsed = CarZodSchema.safeParse(obj);
+  public async create(payload: ICar): Promise<ICar> {
+    const parsed = CarZodSchema.safeParse(payload);
     
-  //   if (!parsed.success) {
-  //     throw parsed.error;
-  //   }
+    if (!parsed.success) {
+      throw parsed.error;
+    }
 
-  //   const created = await this._car.create(parsed.data);
+    const created = await this._car.create(payload);
 
-  //   return created;
-  // }
+    return created;
+  }
 
   public async read(): Promise<ICar[]> {
     const carList = await this._car.read();

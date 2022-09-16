@@ -5,17 +5,10 @@ import { ICar } from '../interfaces/ICar';
 export default class CarController {
   constructor(private _service: IService<ICar>) { }
 
-  // public async create(
-  //   req: Request, 
-  //   // Usamos o ICar como parâmetro genérico do Response
-  //   // para declarar que vamos responder a requisição com um objeto do tipo ICar
-  //   res: Response<ICar & { _id: string }>,
-  // ) {
-  //   const { material, color } = req.body;
-  //   const frame = { material, color };
-  //   const created = await this._service.create(frame);
-  //   return res.status(201).json(created);
-  // }
+  public async create(req: Request, res: Response<ICar>) {
+    const created = await this._service.create(req.body);
+    return res.status(201).json(created);
+  }
 
   public async read(_req: Request, res: Response<ICar[]>) {
     const carList = await this._service.read();
