@@ -1,6 +1,6 @@
-import { Model } from 'mongoose';
-// import { isValidObjectId, Model, UpdateQuery } from 'mongoose';
-// import { ErrorTypes } from '../catalog/Error.catalog';
+// import { Model, isValidObjectId, UpdateQuery } from 'mongoose';
+import { Model, isValidObjectId } from 'mongoose';
+import { ErrorTypes } from '../catalog/Error.catalog';
 import { IModel } from '../interfaces/IModel';
 
 abstract class MongoModel<T> implements IModel<T> {
@@ -18,11 +18,11 @@ abstract class MongoModel<T> implements IModel<T> {
     return this._model.find({});
   }
 
-  // public async readOne(_id: string): Promise<T | null> {
-  //   if (!isValidObjectId(_id)) throw Error(ErrorTypes.InvalidMongoId);
+  public async readOne(_id: string): Promise<T | null> {
+    if (!isValidObjectId(_id)) throw Error(ErrorTypes.InvalidMongoId);
 
-  //   return this._model.findOne({ _id });
-  // }
+    return this._model.findOne({ _id });
+  }
 
   // public async update(_id: string, obj: T): Promise<T | null> {
   //   if (!isValidObjectId(_id)) throw Error(ErrorTypes.InvalidMongoId);
