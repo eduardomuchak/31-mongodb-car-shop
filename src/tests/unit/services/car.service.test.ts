@@ -4,7 +4,7 @@ const { expect } = chai;
 import Car from '../../../models/cars.model';
 import CarService from '../../../services/cars.service';
 import { ZodError } from 'zod';
-import { carMockList, createCarMock, createdCarMock } from '../../mocks/car.mock';
+import { carMockList, createCarMock, createdCarMock, updateCarMock, updatedCarMock } from '../../mocks/car.mock';
 
 describe('Car Service', () => {
   const carModel = new Car();
@@ -16,6 +16,7 @@ describe('Car Service', () => {
       .onCall(0).resolves(createdCarMock)
       .onCall(1).resolves(null);
     sinon.stub(carModel, 'create').resolves(createdCarMock);
+    sinon.stub(carModel, 'update').resolves(updatedCarMock);
   });
 
   after(()=>{
@@ -49,6 +50,38 @@ describe('Car Service', () => {
         await carService.create({} as any);
       } catch (error: any) {
         expect(error).to.be.an.instanceOf(ZodError);
+      }
+    });
+  });
+
+  describe('Update car', () => {
+    it('update car by id', async () => {
+      const car = await carService.update(createdCarMock._id, updateCarMock);
+      expect(car).to.be.an('object');
+      expect(car).to.be.eql(updatedCarMock);
+    });
+
+    it('update car with invalid data', async () => {
+      try {
+        await carService.update(createdCarMock._id, {} as any);
+      } catch (error: any) {
+        expect(error).to.be.an.instanceOf(ZodError);
+      }
+    });
+
+    it('update car with invalid id', async () => {
+      try {
+        await carService.update('invalidId', updateCarMock);
+      } catch (error: any) {
+        expect(error).to.be.an.instanceOf(Error);
+      }
+    });
+
+    it('update car with not found id', async () => {
+      try {
+        await carService.update('6327a0af95535b52d638baec', updateCarMock);
+      } catch (error: any) {
+        expect(error.message).to.be.eql('EntityNotFound');
       }
     });
   });
