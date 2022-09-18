@@ -2,7 +2,7 @@ import * as sinon from 'sinon';
 import chai from 'chai';
 import Car from '../../../models/cars.model';
 import { Model } from 'mongoose';
-import { carMockList, createCarMock, createdCarMock } from '../../mocks/car.mock';
+import { carMockList, createCarMock, createdCarMock, updateCarMock, updatedCarMock } from '../../mocks/car.mock';
 
 const { expect } = chai;
 
@@ -13,6 +13,7 @@ describe('Car Model', () => {
     sinon.stub(Model, 'find').resolves(carMockList);
     sinon.stub(Model, 'findOne').resolves(createdCarMock);
     sinon.stub(Model, 'create').resolves(createdCarMock);
+    sinon.stub(Model, 'findByIdAndUpdate').resolves(updatedCarMock);
   });
 
   after(()=>{
@@ -41,6 +42,22 @@ describe('Car Model', () => {
     it('should create a car', async () => {
       const car = await carModel.create(createCarMock);
       expect(car).to.be.eql(createdCarMock);
+    });
+  });
+
+  describe('Update Car', () => {
+    it('should update a car', async () => {
+      const car = await carModel.update(createdCarMock._id, updateCarMock);
+      expect(car).to.be.eql(updatedCarMock);
+    });
+
+    it('should return error if car does not exist', async () => {
+      try {
+        await carModel.update('notAValidIdToUpdate', updateCarMock);
+      } catch (error: any) {
+        expect(error).to.be.an('error');
+        expect(error.message).to.be.eql('InvalidMongoId');
+      }
     });
   });
 
