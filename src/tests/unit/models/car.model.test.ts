@@ -14,6 +14,7 @@ describe('Car Model', () => {
     sinon.stub(Model, 'findOne').resolves(createdCarMock);
     sinon.stub(Model, 'create').resolves(createdCarMock);
     sinon.stub(Model, 'findByIdAndUpdate').resolves(updatedCarMock);
+    sinon.stub(Model, 'findByIdAndDelete').resolves(createdCarMock);
   });
 
   after(()=>{
@@ -61,6 +62,19 @@ describe('Car Model', () => {
     });
   });
 
-  it('', async () => {});
+  describe('Delete Car', () => {
+    it('should delete a car', async () => {
+      const car = await carModel.delete(createdCarMock._id);
+      expect(car).to.be.eql(createdCarMock);
+    });
 
+    it('should return error if car does not exist', async () => {
+      try {
+        await carModel.delete('notAValidIdToDelete');
+      } catch (error: any) {
+        expect(error).to.be.an('error');
+        expect(error.message).to.be.eql('InvalidMongoId');
+      }
+    });
+  });
 });
