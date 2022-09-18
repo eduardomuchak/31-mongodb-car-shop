@@ -17,6 +17,7 @@ describe('Car Service', () => {
       .onCall(1).resolves(null);
     sinon.stub(carModel, 'create').resolves(createdCarMock);
     sinon.stub(carModel, 'update').resolves(updatedCarMock);
+    sinon.stub(carModel, 'delete').resolves(createdCarMock);
   });
 
   after(()=>{
@@ -79,13 +80,34 @@ describe('Car Service', () => {
 
     it('update car with not found id', async () => {
       try {
-        await carService.update('6327a0af95535b52d638baec', updateCarMock);
+        await carService.update(updatedCarMock._id, updateCarMock);
       } catch (error: any) {
         expect(error.message).to.be.eql('EntityNotFound');
       }
     });
   });
 
-  it('', async () => {});
+  describe('Delete car', () => {
+    it('delete car by id', async () => {
+      const car = await carService.delete(createdCarMock._id);
+      expect(car).to.be.an('object');
+      expect(car).to.be.eql(createdCarMock);
+    });
 
+    it('delete car with invalid id', async () => {
+      try {
+        await carService.delete('invalidId');
+      } catch (error: any) {
+        expect(error).to.be.an.instanceOf(Error);
+      }
+    });
+
+    it('delete car with not found id', async () => {
+      try {
+        await carService.delete('invalidId');
+      } catch (error: any) {
+        expect(error.message).to.be.eql('EntityNotFound');
+      }
+    });
+  });
 });
