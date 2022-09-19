@@ -37,6 +37,15 @@ describe('Car Model', () => {
       const car = await carModel.readOne(createdCarMock._id);
       expect(car).to.be.eql(createdCarMock);
     });
+
+    it('should return an error if id of search is wrong', async () => {
+      try {
+        await carModel.readOne('123');
+      }
+      catch (error: any) {
+        expect(error).to.be.an('error');
+      }
+    });
   });
 
   describe('Create Car', () => {
