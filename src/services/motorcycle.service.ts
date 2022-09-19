@@ -3,7 +3,7 @@ import { IMotorcycle, MotorcycleZodSchema } from '../interfaces/IMotorcycle';
 import { IModel } from '../interfaces/IModel';
 import { ErrorTypes } from '../catalog/Error.catalog';
 
-class CarService implements IService<IMotorcycle> {
+class MotorcycleService implements IService<IMotorcycle> {
   constructor(private _motorcycle: IModel<IMotorcycle>) {}
 
   public async create(payload: IMotorcycle): Promise<IMotorcycle> {
@@ -54,4 +54,4 @@ class CarService implements IService<IMotorcycle> {
   }
 }
 
-export default CarService;
+export default MotorcycleService;
