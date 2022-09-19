@@ -21,6 +21,7 @@ describe('Car Controller', () => {
     sinon.stub(carService, 'readOne').resolves(createdCarMock);
     sinon.stub(carService, 'create').resolves(createdCarMock);
     sinon.stub(carService, 'update').resolves(createdCarMock);
+    sinon.stub(carService, 'delete').resolves(createdCarMock);
 
     res.status = sinon.stub().returns(res);
     res.json = sinon.stub().returns(res);
@@ -69,7 +70,12 @@ describe('Car Controller', () => {
     });
   });
 
-
-  it('', async () => {});
-
+  describe('Delete car', () => {
+    it('delete a car', async () => {
+      req.params = { id: createdCarMock._id };
+      await carController.delete(req, res);
+      expect((res.status as sinon.SinonStub).calledWith(200)).to.be.true;
+      expect((res.json as sinon.SinonStub).calledWith(createdCarMock)).to.be.true;
+    });
+  });
 });
