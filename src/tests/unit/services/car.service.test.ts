@@ -37,6 +37,14 @@ describe('Car Service', () => {
       expect(car).to.be.an('object');
       expect(car).to.be.eql(createdCarMock);
     });
+
+    it('get car by id not found', async () => {
+      try {
+        await carService.readOne('123');
+      } catch (error: any) {
+        expect(error).to.be.an('error');
+      }
+    });
   });
 
   describe('Create car', () => {
@@ -67,6 +75,14 @@ describe('Car Service', () => {
         await carService.update(createdCarMock._id, {} as any);
       } catch (error: any) {
         expect(error).to.be.an.instanceOf(ZodError);
+      }
+    });
+
+    it('update car by id not found', async () => {
+      try {
+        await carService.update('123', updateCarMock);
+      } catch (error: any) {
+        expect(error).to.be.an('error');
       }
     });
 
